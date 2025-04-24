@@ -372,7 +372,7 @@ DISTRICT_CENTERS = {
 def load_data():
     try:
         # 使用 pandas 直接从 GitHub raw 链接读取数据
-        url = "https://raw.githubusercontent.com/[你的用户名]/[仓库名]/main/data/charging_stations.csv"
+        url = "https://raw.githubusercontent.com/zh-box/shanghai/main/data/charging_stations.csv"
         
         try:
             # 首先尝试从GitHub读取
