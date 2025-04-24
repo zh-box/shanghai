@@ -367,12 +367,20 @@ DISTRICT_CENTERS = {
     "崇明区": {"lng": 121.3973, "lat": 31.6229, "zoom": 11}
 }
 
-
 # 读取Excel数据
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_excel(r"C:\Users\86137\Desktop\共享充电桩\上海各区充电站信息.xlsx")
+        # 使用 pandas 直接从 GitHub raw 链接读取数据
+        url = "https://raw.githubusercontent.com/[你的用户名]/[仓库名]/main/data/charging_stations.csv"
+        
+        try:
+            # 首先尝试从GitHub读取
+            df = pd.read_csv(url)
+        except:
+            # 如果GitHub读取失败，尝试从本地读取（用于本地开发）
+            df = pd.read_excel(r"C:\Users\86137\Desktop\共享充电桩\上海各区充电站信息.xlsx")
+        
         # 转换数据类型
         df["充电费（元/度）"] = pd.to_numeric(df["充电费（元/度）"], errors='coerce')
         df["服务费（元/小时或度）"] = pd.to_numeric(df["服务费（元/小时或度）"], errors='coerce')
@@ -384,7 +392,6 @@ def load_data():
     except Exception as e:
         st.error(f"读取数据时出错: {str(e)}")
         return None
-
 
 def create_map_html(df, show_type="all", selected_district="全上海"):
     # 获取选中区域的中心点和缩放级别
@@ -570,7 +577,6 @@ def create_map_html(df, show_type="all", selected_district="全上海"):
         infoPanel.innerHTML = '<p style="color: #999;">点击地图上的标记点查看详细信息</p>';
     </script>
     """
-
 
 def main():
     # 包装主要内容在一个div中
